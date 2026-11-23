@@ -3,7 +3,8 @@
     { "id": "1", "nome": "Volkswagen" },
     { "id": "2", "nome": "Fiat" },
     { "id": "3", "nome": "Toyota" },
-    { "id": "4", "nome": "Chevrolet" }
+    { "id": "4", "nome": "Chevrolet" },
+    { "id": "5", "nome": "Ford" }
   ],
   "categorias": [
     { "id": "1", "nome": "Econômico", "valorLocacao": 120.0 },
@@ -13,21 +14,25 @@
   ],
   "modelos": [
     { "id": "1", "nome": "Gol", "ano": 2024, "marcaId": "1", "categoriaId": "1" },
-    { "id": "2", "nome": "Argo", "ano": 2023, "marcaId": "2", "categoriaId": "1" },
+    { "id": "2", "nome": "Onix", "ano": 2023, "marcaId": "4", "categoriaId": "2" },
     { "id": "3", "nome": "Corolla", "ano": 2024, "marcaId": "3", "categoriaId": "4" },
-    { "id": "4", "nome": "T-Cross", "ano": 2025, "marcaId": "1", "categoriaId": "3" }
+    { "id": "4", "nome": "T-Cross", "ano": 2025, "marcaId": "1", "categoriaId": "3" },
+    { "id": "5", "nome": "Mobi", "ano": 2020, "marcaId": "2", "categoriaId": "1" },
+    { "id": "6", "nome": "Ka", "ano": 2020, "marcaId": "5", "categoriaId": "1" }
   ],
   "veiculos": [
     { "id": "1", "chassi": "9BWZZZ377VT004251", "placa": "ABC1D23", "anoFabricacao": 2024, "cor": "Prata", "kmRodado": 15000, "modeloId": "1" },
-    { "id": "2", "chassi": "9BD195A19N0123456", "placa": "BRA2E19", "anoFabricacao": 2023, "cor": "Branco", "kmRodado": 32000, "modeloId": "2" },
-    { "id": "3", "chassi": "9BR53ZEC4P8123456", "placa": "QWE3F45", "anoFabricacao": 2024, "cor": "Preto", "kmRodado": 8000, "modeloId": "3" },
-    { "id": "4", "chassi": "9BWAA45U0NP123456", "placa": "RTY4G67", "anoFabricacao": 2025, "cor": "Cinza", "kmRodado": 3000, "modeloId": "4" }
+    { "id": "2", "chassi": "9BGKS48U0PG123456", "placa": "BRA2E19", "anoFabricacao": 2023, "cor": "Branco", "kmRodado": 32000, "modeloId": "2" },
+    { "id": "3", "chassi": "9BRBL3HE0R0123456", "placa": "QWE3F45", "anoFabricacao": 2024, "cor": "Preto", "kmRodado": 8000, "modeloId": "3" },
+    { "id": "4", "chassi": "9BWAA45U0RP123456", "placa": "RTY4G67", "anoFabricacao": 2025, "cor": "Cinza", "kmRodado": 3000, "modeloId": "4" },
+    { "id": "5", "chassi": "9BD341A5XLY123456", "placa": "MOB5H89", "anoFabricacao": 2020, "cor": "Vermelho", "kmRodado": 54000, "modeloId": "5" },
+    { "id": "6", "chassi": "9BFZB55H0L8123456", "placa": "FKA6J01", "anoFabricacao": 2020, "cor": "Azul", "kmRodado": 61000, "modeloId": "6" }
   ],
   "manutencoes": [],
   "clientes": [
-    { "id": "1", "nome": "Ana Souza", "cpf": "111.111.111-11", "cnh": "10000000001", "validadeCnh": "2030-05-10", "telefone": "(62) 99999-0001", "email": "ana@email.com", "endereco": "Rua A, 100, Goiânia" },
-    { "id": "2", "nome": "Bruno Lima", "cpf": "222.222.222-22", "cnh": "10000000002", "validadeCnh": "2028-08-20", "telefone": "(62) 99999-0002", "email": "bruno@email.com", "endereco": "Rua B, 200, Goiânia" },
-    { "id": "3", "nome": "Carla Mendes", "cpf": "333.333.333-33", "cnh": "10000000003", "validadeCnh": "2025-01-15", "telefone": "(62) 99999-0003", "email": "carla@email.com", "endereco": "Rua C, 300, Goiânia" }
+    { "id": "1", "nome": "Sophia Ellen Silva Canêdo", "cpf": "111.111.111-11", "cnh": "10000000001", "validadeCnh": "2030-05-10", "telefone": "(62) 99999-0001", "email": "soph@email.com", "endereco": "Rua A, 100, Goiânia" },
+    { "id": "2", "nome": "Márcio Alves de Araújo Filho", "cpf": "222.222.222-22", "cnh": "10000000002", "validadeCnh": "2028-08-20", "telefone": "(62) 99999-0002", "email": "marcioalves@email.com", "endereco": "Rua B, 200, Goiânia" },
+    { "id": "3", "nome": "Hitalo Augusto", "cpf": "333.333.333-33", "cnh": "10000000003", "validadeCnh": "2025-01-15", "telefone": "(62) 99999-0003", "email": "hitalozz@email.com", "endereco": "Rua C, 300, Goiânia" }
   ],
   "locacoes": [],
   "contratos": [],
