@@ -23,7 +23,7 @@ export const locacaoInicial: Locacao = {
   veiculoId: "",
 };
 
-// Número de diárias (arredonda para cima; devolve 0 se as datas forem inválidas)
+//número de diárias (arredonda para cima; devolve 0 se as datas forem inválidas)
 export function calcularDiarias(dataRetirada: string, dataDevolucao: string): number {
   const ms = new Date(dataDevolucao).getTime() - new Date(dataRetirada).getTime();
   if (Number.isNaN(ms) || ms <= 0) return 0;
