@@ -21,6 +21,6 @@ export const clienteInicial: Cliente = {
 
 // RN03: CNH vencida (datas no formato YYYY-MM-DD)
 export function cnhVencida(cliente: Cliente): boolean {
-  const hoje = new Date().toISOString().slice(0, 10);
+  const hoje = new Date().toLocaleDateString("en-CA");
   return cliente.validadeCnh < hoje;
 }
