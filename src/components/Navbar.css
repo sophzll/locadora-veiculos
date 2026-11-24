@@ -1,0 +1,98 @@
+.topbar {
+  position: sticky; top: 0; z-index: 1030;
+  background: #000; border-bottom: 1px solid #1b2330;
+  box-shadow: 0 1px 0 var(--azul-escuro, #0c3a5c);
+}
+.topbar-inner {
+  position: relative; display: flex; align-items: center;
+  justify-content: space-between; gap: 1rem; min-height: 68px;
+}
+
+/* Marca: ícone | nome */
+.topbar-brand { display: flex; align-items: center; gap: 0.85rem; color: #fff; text-decoration: none; }
+.topbar-logo { height: 38px; width: auto; }
+.topbar-divisor { width: 1px; height: 34px; background: rgba(199, 205, 214, 0.45); }
+.topbar-nome {
+  display: flex; flex-direction: column; color: #fff;
+  font-family: "Orbitron", "Poppins", sans-serif; font-weight: 900; font-style: italic;
+  text-transform: uppercase; font-size: 1rem; line-height: 1.05; letter-spacing: 0.02em;
+}
+
+/* Botão do menu (celular) */
+.topbar-toggler {
+  display: inline-flex; flex-direction: column; gap: 5px; padding: 0.65rem;
+  background: none; border: 1px solid #2b323c; border-radius: 8px; cursor: pointer;
+}
+.topbar-toggler .barra { width: 22px; height: 2px; background: #fff; }
+
+/* Menu (celular: abre embaixo da barra) */
+.topbar-menu {
+  display: none; position: absolute; top: 100%; left: 0; right: 0;
+  flex-direction: column; align-items: stretch; gap: 0.35rem;
+  padding: 0.75rem 1rem 1rem; background: #000; border-bottom: 1px solid #1b2330;
+}
+.topbar-menu.aberto { display: flex; }
+
+.topbar-link, .modulos-botao {
+  display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.9rem;
+  color: var(--prata, #c7cdd6); background: none; border: 1px solid transparent;
+  border-radius: 6px; text-decoration: none; cursor: pointer;
+  font-family: "Rajdhani", "Poppins", sans-serif; font-weight: 600; font-size: 1rem;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.topbar-link:hover, .modulos-botao:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+.topbar-link.active { color: #fff; box-shadow: inset 0 -2px 0 var(--azul, #2b86e0); border-radius: 6px 6px 0 0; }
+
+/* Caixa "Módulos" */
+.modulos { position: relative; }
+.modulos-botao { border-color: #2b323c; justify-content: space-between; width: 100%; }
+.modulos-botao[aria-expanded="true"], .modulos-botao.em-modulo { color: #fff; border-color: var(--azul, #2b86e0); }
+.chevron {
+  width: 0.5rem; height: 0.5rem; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px); transition: transform 0.15s;
+}
+.modulos-botao[aria-expanded="true"] .chevron { transform: rotate(-135deg) translateY(-1px); }
+
+.modulos-painel {
+  display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 0.5rem; padding: 0.6rem;
+  background: #0b0f15; border: 1px solid #232b37; border-radius: 10px;
+  animation: painel-entra 0.14s ease-out;
+}
+.modulos-titulo {
+  margin: 0.4rem 0.7rem 0.25rem; color: var(--cinza, #8a93a0); font-size: 0.72rem;
+  font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.modulo-item {
+  display: block; padding: 0.55rem 0.7rem; color: var(--prata, #c7cdd6);
+  border-left: 3px solid transparent; border-radius: 8px; text-decoration: none;
+}
+.modulo-item:hover { background: rgba(43, 134, 224, 0.12); color: #fff; }
+.modulo-item.ativo { background: rgba(43, 134, 224, 0.16); border-left-color: var(--azul, #2b86e0); color: #fff; }
+.modulo-nome { display: block; font-weight: 600; font-size: 0.95rem; }
+.modulo-desc { display: block; font-size: 0.78rem; color: var(--cinza, #8a93a0); }
+
+.topbar a:focus-visible, .topbar button:focus-visible { outline: 2px solid var(--azul, #2b86e0); outline-offset: 2px; }
+
+@keyframes painel-entra {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .modulos-painel { animation: none; }
+  .chevron { transition: none; }
+}
+
+/* Telas largas */
+@media (min-width: 992px) {
+  .topbar-toggler { display: none; }
+  .topbar-menu {
+    display: flex; position: static; flex-direction: row; align-items: center;
+    padding: 0; background: none; border: 0;
+  }
+  .modulos-botao { width: auto; }
+  .modulos-painel {
+    position: absolute; right: 0; top: calc(100% + 10px); z-index: 5;
+    width: min(560px, 92vw); grid-template-columns: 1fr 1fr; gap: 0.25rem 0.75rem; margin-top: 0;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+  }
+}
