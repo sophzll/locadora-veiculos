@@ -1,39 +1,163 @@
-.suprema-hero { flex: 1; min-height: calc(100svh - 124px); padding-top: clamp(1.5rem, 5vh, 3.5rem); background: #000; isolation: isolate; }
-.suprema-bg { position: absolute; inset: 0; z-index: -2; will-change: transform; background-size: cover; background-position: center; }
-.suprema-overlay {
-  position: absolute; inset: 0; z-index: -1;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 78%, rgba(12, 58, 92, 0.55), transparent 70%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.25) 42%, rgba(0, 0, 0, 0.75) 100%);
+:root {
+   .suprema-hero {
+    --suprema-car-width: 860px;
+    --suprema-header-footer: 124px;
 }
+}
+
+.suprema-hero {
+    position: relative;
+    flex: 1;
+    min-height: calc(100svh - var(--suprema-header-footer));
+    padding-top: clamp(1.5rem, 5vh, 3.5rem);
+    background: var(--suprema-black);
+    isolation: isolate;
+    overflow: hidden;
+}
+
+
+.suprema-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    will-change: transform;
+    background-size: cover;
+    background-position: center;
+}
+
+.suprema-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    background:
+        radial-gradient(
+            ellipse 70% 50% at 50% 78%,
+            rgba(12, 58, 92, 0.55),
+            transparent 70%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.8) 0%,
+            rgba(0, 0, 0, 0.25) 42%,
+            rgba(0, 0, 0, 0.75) 100%
+        );
+}
+
 
 .suprema-kicker {
-  display: inline-flex; align-items: center; gap: 0.9rem; margin: 0 0 0.6rem; color: var(--prata, #c7cdd6);
-  font-family: "Rajdhani", "Poppins", sans-serif; font-weight: 600; letter-spacing: 0.28em;
-  font-size: clamp(0.8rem, 1.4vw, 1rem); text-transform: uppercase;
-}
-.suprema-kicker::before, .suprema-kicker::after { content: ""; width: 2rem; height: 1px; background: rgba(199, 205, 214, 0.5); }
-.suprema-title {
-  gap: 0 0.3em; margin: 0; color: #fff; text-transform: uppercase; font-style: italic;
-  font-family: "Orbitron", "Poppins", sans-serif; font-weight: 900; line-height: 1.05;
-  font-size: clamp(2.1rem, 6vw, 5rem);
-}
-.palavra { display: inline-block; overflow: hidden; padding: 0.08em 0.06em; }
-.palavra-in { display: inline-block; }
-.suprema-accent { color: var(--azul, #2b86e0); }
-.suprema-line { width: min(520px, 70%); height: 2px; margin-top: 1.1rem; margin-bottom: 1rem; background: linear-gradient(90deg, transparent, var(--azul, #2b86e0), transparent); }
-.suprema-subtitle { color: var(--prata, #c7cdd6); font-size: clamp(0.95rem, 1.6vw, 1.15rem); }
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 0 0 0.6rem;
 
-.suprema-stage { position: relative; width: 100%; padding-top: 1rem; }
-.suprema-stage::after {
-  content: ""; position: absolute; left: 50%; bottom: 2%; width: min(760px, 80%); height: 26px;
-  transform: translateX(-50%); filter: blur(10px);
-  background: radial-gradient(ellipse at center, rgba(43, 134, 224, 0.45), transparent 70%);
+    color: var(--suprema-silver);
+    font-family: var(--suprema-font-secondary);
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    font-size: clamp(0.8rem, 1.4vw, 1rem);
+    text-transform: uppercase;
 }
-.suprema-car { position: relative; z-index: 1; width: min(860px, 94%); height: auto; filter: drop-shadow(0 22px 26px rgba(0, 0, 0, 0.85)); }
+
+.suprema-kicker::before,
+.suprema-kicker::after {
+    content: "";
+    width: 2rem;
+    height: 1px;
+    background: var(--suprema-silver-soft);
+}
+
+.suprema-title {
+    gap: 0 0.3em;
+    margin: 0;
+
+    color: var(--suprema-white);
+    font-family: var(--suprema-font-display);
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    line-height: 1.05;
+    font-size: clamp(2.1rem, 6vw, 5rem);
+}
+
+.suprema-accent {
+    color: var(--suprema-blue);
+}
+
+.suprema-subtitle {
+    color: var(--suprema-silver);
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+}
+
+
+.palavra {
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.08em 0.06em;
+}
+
+.palavra-in {
+    display: inline-block;
+}
+
+.suprema-line {
+    width: min(520px, 70%);
+    height: 2px;
+    margin-top: 1.1rem;
+    margin-bottom: 1rem;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--suprema-blue),
+        transparent
+    );
+}
+
+.suprema-stage {
+    position: relative;
+    width: 100%;
+    padding-top: 1rem;
+}
+
+.suprema-stage::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 2%;
+
+    width: min(760px, 80%);
+    height: 26px;
+
+    transform: translateX(-50%);
+    filter: blur(10px);
+
+    background: radial-gradient(
+        ellipse at center,
+        var(--suprema-glow),
+        transparent 70%
+    );
+}
+
+.suprema-car {
+    position: relative;
+    z-index: 1;
+
+    width: min(var(--suprema-car-width), 94%);
+    height: auto;
+
+    filter: drop-shadow(
+        0 22px 26px var(--suprema-shadow)
+    );
+}
 
 .suprema-actions .btn {
-  min-height: 44px; padding: 0.6rem 1.7rem; border-radius: 0;
-  font-family: "Rajdhani", "Poppins", sans-serif; font-weight: 600;
-  letter-spacing: 0.04em; text-transform: uppercase;
+    min-height: 44px;
+    padding: 0.6rem 1.7rem;
+    border-radius: 0;
+
+    font-family: var(--suprema-font-secondary);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }

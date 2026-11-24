@@ -6,7 +6,7 @@ import "./Navbar.css";
 interface Modulo {
   to: string;
   label: string;
-  descricao: string;
+  descricao?: string;
 }
 
 interface GrupoModulos {
@@ -18,11 +18,11 @@ const grupos: GrupoModulos[] = [
   {
     titulo: "Frota",
     itens: [
-      { to: "/marcas", label: "Marcas", descricao: "Fabricantes dos veículos" },
-      { to: "/categorias", label: "Categorias", descricao: "Classes e valor da diária" },
-      { to: "/modelos", label: "Modelos", descricao: "Marca e categoria" },
-      { to: "/veiculos", label: "Veículos", descricao: "Frota e disponibilidade" },
-      { to: "/manutencoes", label: "Manutenções", descricao: "Histórico por veículo" },
+      { to: "/marcas", label: "Marcas"},
+      { to: "/categorias", label: "Categorias"},
+      { to: "/modelos", label: "Modelos"},
+      { to: "/veiculos", label: "Veículos"},
+      { to: "/manutencoes", label: "Manutenções"},
     ],
   },
   {
