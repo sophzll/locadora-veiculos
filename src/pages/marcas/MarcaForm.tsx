@@ -1,64 +1,68 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, type FormEvent } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
-import { Card } from "../../components/Card";
 import { Alert } from "../../components/Alert";
+import { Modal } from "../../components/Modal";
 import { marcaInicial, type Marca } from "../../models/Marca";
 import { marcaService } from "../../service/marcaService";
 
-export function MarcaForm() {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const [marca, setMarca] = useState<Marca>({ ...marcaInicial });
+interface MarcaFormProps {
+  marca: Marca | null;
+  onClose: () => void;
+  onSaved: (marca: Marca, editando: boolean) => void;
+}
+
+export function MarcaForm({ marca, onClose, onSaved }: MarcaFormProps) {
+  const [dados, setDados] = useState<Marca>({ ...(marca ?? marcaInicial) });
   const [erro, setErro] = useState("");
   const [erroNome, setErroNome] = useState("");
-  const [carregando, setCarregando] = useState(Boolean(id));
-  const [falhaCarga, setFalhaCarga] = useState(false);
   const [salvando, setSalvando] = useState(false);
-
-  useEffect(() => {
-    let ativo = true;
-    if (!id) { setMarca({ ...marcaInicial }); setCarregando(false); setFalhaCarga(false); return; }
-    setCarregando(true);
-    setFalhaCarga(false);
-    marcaService.buscarPorId(id).then((dados) => { if (ativo) setMarca(dados); }).catch(() => {
-      if (ativo) { setErro("Não foi possível carregar a marca."); setFalhaCarga(true); }
-    }).finally(() => { if (ativo) setCarregando(false); });
-    return () => { ativo = false; };
-  }, [id]);
+  const editando = Boolean(marca?.id);
 
   async function salvar(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (salvando || carregando || falhaCarga) return;
-    const nome = marca.nome.trim();
-    if (!nome) { setErroNome("Informe o nome da marca."); return; }
+    if (salvando) return;
+    const nome = dados.nome.trim();
+    if (!nome) {
+      setErroNome("Informe o nome da marca.");
+      return;
+    }
     setSalvando(true);
     setErro("");
     try {
-      if (id) await marcaService.atualizar(id, { ...marca, nome });
-      else await marcaService.criar({ nome });
-      navigate("/marcas", { replace: true, state: { mensagem: id ? "Marca atualizada com sucesso!" : "Marca cadastrada com sucesso!" } });
-    } catch { setErro("Não foi possível salvar a marca. Tente novamente."); }
-    finally { setSalvando(false); }
+      const salva = marca?.id
+        ? await marcaService.atualizar(marca.id, { ...dados, nome })
+        : await marcaService.criar({ nome });
+      onSaved(salva, editando);
+    } catch {
+      setErro("Não foi possível salvar a marca. Tente novamente.");
+    } finally {
+      setSalvando(false);
+    }
   }
 
   return (
-    <section className="container-xl py-5">
-      <p className="small text-body-secondary mb-3">Home / Frota / Marcas / {id ? "Editar" : "Cadastrar"}</p>
-      <h2 className="mb-4">{id ? "Editar marca" : "Nova marca"}</h2>
-      {erro && <Alert type="danger" message={erro} onClose={() => setErro("")} />}
-      <div className="col-12 col-lg-8 mx-auto">
-        <Card title="Dados do fabricante">
-          {carregando ? <p role="status">Carregando...</p> : <form onSubmit={salvar}>
-            <Input label="Nome da marca" name="nome" value={marca.nome} placeholder="Ex.: Chevrolet" required error={erroNome} disabled={salvando || falhaCarga} onChange={(e) => { setMarca({ ...marca, nome: e.target.value }); setErroNome(""); }} />
-            <div className="d-flex flex-wrap gap-2 mt-4">
-              <Button label={salvando ? "Salvando..." : "Salvar marca"} type="submit" disabled={salvando || falhaCarga} />
-              <Button label="Cancelar" variant="secondary" disabled={salvando} onClick={() => navigate("/marcas")} />
-            </div>
-          </form>}
-        </Card>
-      </div>
-    </section>
+    <Modal show title={editando ? "Editar marca" : "Nova marca"} onClose={onClose}>
+      <form onSubmit={salvar}>
+        {erro && <Alert type="danger" message={erro} onClose={() => setErro("")} />}
+        <Input
+          label="Nome da marca"
+          name="nome"
+          value={dados.nome}
+          placeholder="Ex.: Chevrolet"
+          required
+          error={erroNome}
+          disabled={salvando}
+          onChange={(e) => {
+            setDados({ ...dados, nome: e.target.value });
+            setErroNome("");
+          }}
+        />
+        <div className="d-flex justify-content-end gap-2 border-top pt-3 mt-3">
+          <Button label="Cancelar" variant="secondary" disabled={salvando} onClick={onClose} />
+          <Button label={salvando ? "Salvando..." : "Salvar marca"} variant="primary" type="submit" disabled={salvando} />
+        </div>
+      </form>
+    </Modal>
   );
 }

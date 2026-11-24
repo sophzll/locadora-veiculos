@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { MarcaForm } from "./MarcaForm";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Table, type Column } from "../../components/Table";
@@ -16,14 +16,13 @@ const columns: Column<Marca>[] = [
 ];
 
 export function MarcaList() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [formulario, setFormulario] = useState<{ marca: Marca | null } | null>(null);
   const [marcas, setMarcas] = useState<Marca[]>([]);
   const [pesquisa, setPesquisa] = useState("");
   const [carregando, setCarregando] = useState(true);
   const [selecionada, setSelecionada] = useState<Marca | null>(null);
   const [mensagem, setMensagem] = useState<{ type: "success" | "danger" | "warning"; message: string } | null>(
-    typeof location.state?.mensagem === "string" ? { type: "success", message: location.state.mensagem } : null
+    null
   );
   const excluindo = useRef(false);
 
@@ -62,19 +61,31 @@ export function MarcaList() {
     <section className="container-xl py-5">
       <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div><h2 className="mb-1">Marcas</h2><p className="text-body-secondary mb-0">Gerencie os fabricantes da sua frota.</p></div>
-        <Button label="+ Nova marca" onClick={() => navigate("/marcas/novo")} />
+        <Button label="+ Nova marca" disabled={carregando} onClick={() => setFormulario({ marca: null })} />
       </div>
       {mensagem && <Alert {...mensagem} onClose={() => setMensagem(null)} />}
       <div className="border rounded-3 p-3 mb-4 bg-body-tertiary d-inline-flex flex-column"><span className="small text-body-secondary">Total de marcas cadastradas</span><strong className="fs-2 text-primary">{String(marcas.length).padStart(2, "0")}</strong></div>
       <Card title="Fabricantes cadastrados">
         <Input label="Pesquisar marca" name="pesquisa" value={pesquisa} placeholder="Digite o nome do fabricante" onChange={(e) => setPesquisa(e.target.value)} />
-        {carregando ? <p role="status">Carregando marcas...</p> : <Table columns={columns} data={filtradas} onEdit={(marca) => marca.id && navigate(`/marcas/${marca.id}/editar`)} onDelete={setSelecionada} />}
+        {carregando ? <p role="status">Carregando marcas...</p> : <Table columns={columns} data={filtradas} onEdit={(marca) => setFormulario({ marca })} onDelete={setSelecionada} />}
         {!carregando && <p className="small text-body-secondary mb-0">Exibindo {filtradas.length} de {marcas.length} registros.</p>}
       </Card>
+      {formulario && (
+        <MarcaForm
+          marca={formulario.marca}
+          onClose={() => setFormulario(null)}
+          onSaved={(salva, editando) => {
+            setMarcas((anteriores) => editando
+              ? anteriores.map((marca) => marca.id === salva.id ? salva : marca)
+              : [...anteriores, salva]);
+            setFormulario(null);
+            setMensagem({ type: "success", message: editando ? "Marca atualizada com sucesso!" : "Marca cadastrada com sucesso!" });
+          }}
+        />
+      )}
       <Modal show={selecionada !== null} title="Excluir marca" onClose={() => setSelecionada(null)} onConfirm={() => void excluir()} confirmLabel="Excluir">
         <p className="mb-0">Deseja excluir a marca <strong>{selecionada?.nome}</strong>?</p>
       </Modal>
     </section>
   );
 }
-
