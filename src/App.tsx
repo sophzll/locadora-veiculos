@@ -4,6 +4,7 @@ import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Navbar";
 import { Home } from "./pages/Home";
 import { MarcaList } from "./pages/marcas/MarcaList";
+import { CategoriaList } from "./pages/categorias/CategoriaList";
 import "./base.css";
 
 function EmBreve() {
@@ -24,6 +25,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/marcas" element={<MarcaList />} />
+          <Route path="/categorias" element={<CategoriaList />} />
           <Route path="*" element={<EmBreve />} />
         </Routes>
       </main>
