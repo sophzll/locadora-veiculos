@@ -1,6 +1,6 @@
 interface ButtonProps {
   label: string;
-  variant?: "primary" | "secondary" | "success" | "danger" | "warning" | "light";
+  variant?: "primary" | "secondary" | "success" | "danger" | "warning" | "light" | "outline-primary" | "outline-light";
   type?: "button" | "submit";
   size?: "sm" | "lg";
   disabled?: boolean;

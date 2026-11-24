@@ -31,7 +31,7 @@ export function Modal({
             <div className="modal-body">{children}</div>
             <div className="modal-footer">
               <Button label="Cancelar" variant="secondary" onClick={onClose} />
-              <Button label={confirmLabel} variant="danger" onClick={onConfirm} />
+              <Button label={confirmLabel} variant="outline-light" onClick={onConfirm} />
             </div>
           </div>
         </div>

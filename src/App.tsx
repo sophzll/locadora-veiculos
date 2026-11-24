@@ -3,6 +3,8 @@ import { Card } from "./components/Card";
 import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Navbar";
 import { Home } from "./pages/Home";
+import { MarcaList } from "./pages/marcas/MarcaList";
+import { MarcaForm } from "./pages/marcas/MarcaForm";
 import "./base.css";
 
 function EmBreve() {
@@ -22,6 +24,9 @@ export default function App() {
       <main className="flex-grow-1 d-flex flex-column">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/marcas" element={<MarcaList />} />
+          <Route path="/marcas/novo" element={<MarcaForm />} />
+          <Route path="/marcas/:id/editar" element={<MarcaForm />} />
           <Route path="*" element={<EmBreve />} />
         </Routes>
       </main>

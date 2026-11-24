@@ -57,7 +57,7 @@ export function Table<T extends { id?: string }>({
                       {onEdit && (
                         <Button
                           label="Editar"
-                          variant="warning"
+                          variant="outline-primary"
                           size="sm"
                           onClick={() => onEdit(item)}
                         />
@@ -65,7 +65,7 @@ export function Table<T extends { id?: string }>({
                       {onDelete && (
                         <Button
                           label="Excluir"
-                          variant="danger"
+                          variant="outline-light"
                           size="sm"
                           onClick={() => onDelete(item)}
                         />
