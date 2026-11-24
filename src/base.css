@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Orbitron:wght@700;900&family=Poppins:wght@400;500;600&family=Rajdhani:wght@500;600&display=swap");
+
+:root {
+  --preto: #06080b;
+  --azul-escuro: #0c3a5c;
+  --azul: #2b86e0;
+  --prata: #c7cdd6;
+  --cinza: #8a93a0;
+}
+
+[data-bs-theme="dark"] {
+  --bs-body-bg: var(--preto);
+  --bs-body-color: var(--prata);
+  --bs-body-font-family: "Poppins", system-ui, sans-serif;
+  --bs-link-color: var(--azul);
+}
+
+h2, h3 { font-family: "Anton", Impact, sans-serif; font-weight: 400; letter-spacing: 0.03em; text-transform: uppercase; }
+
+.btn-primary {
+  --bs-btn-bg: #1b6fc4; --bs-btn-border-color: #1b6fc4;
+  --bs-btn-hover-bg: var(--azul); --bs-btn-hover-border-color: var(--azul);
+  --bs-btn-active-bg: var(--azul-escuro); --bs-btn-active-border-color: var(--azul-escuro);
+}
