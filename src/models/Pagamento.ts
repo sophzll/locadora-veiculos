@@ -17,3 +17,12 @@ export const pagamentoInicial: Pagamento = {
   status: "PAGO",
   locacaoId: "",
 };
+
+export const formasPagamento: Record<FormaPagamento, string> = {
+    DINHEIRO: "Dinheiro", PIX: "Pix",
+    CARTAO_CREDITO: "Cartão de crédito", CARTAO_DEBITO: "Cartão de débito"
+};
+export const statusPagamento: Record<StatusPagamento, string> = {
+    PENDENTE: "Pendente", PAGO: "Pago", CANCELADO: "Cancelado"
+};
+

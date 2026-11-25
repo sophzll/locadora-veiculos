@@ -4,7 +4,7 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
 import { Modal } from "../../components/Modal";
-import { pagamentoInicial, type Pagamento, type FormaPagamento, type StatusPagamento } from "../../models/Pagamento";
+import { pagamentoInicial, formasPagamento, statusPagamento, type Pagamento, type FormaPagamento, type StatusPagamento } from "../../models/Pagamento";
 import { pagamentoService } from "../../service/pagamentoService";
 import { locacaoService } from "../../service/locacaoService";
 
@@ -14,14 +14,6 @@ interface PagamentoFormProps {
     onClose: () => void;
     onSaved: (salvo: Pagamento, editando: boolean) => void;
 }
-
-export const formasPagamento: Record<FormaPagamento, string> = {
-    DINHEIRO: "Dinheiro", PIX: "Pix",
-    CARTAO_CREDITO: "Cartão de crédito", CARTAO_DEBITO: "Cartão de débito"
-};
-export const statusPagamento: Record<StatusPagamento, string> = {
-    PENDENTE: "Pendente", PAGO: "Pago", CANCELADO: "Cancelado"
-};
 
 function agoraLocal() {
     const d = new Date();

@@ -7,7 +7,8 @@ import { Alert } from "../../components/Alert";
 import { NotaFiscal } from "./NotaFiscal";
 import { Table, type Column } from "../../components/Table";
 import type { Pagamento } from "../../models/Pagamento";
-import { PagamentoForm, formasPagamento, statusPagamento } from "./PagamentoForm";
+import { PagamentoForm } from "./PagamentoForm";
+import { formasPagamento, statusPagamento } from "../../models/Pagamento";
 
 import { locacaoService } from "../../service/locacaoService";
 import { clienteService } from "../../service/clienteService";
