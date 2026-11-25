@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Alert } from "../../components/Alert";
@@ -21,7 +21,7 @@ export function CategoriaForm({ categoria, onClose, onSaved }: CategoriaFormProp
   const [salvando, setSalvando] = useState(false);
   const editando = Boolean(categoria?.id);
 
-  async function salvar(e: FormEvent<HTMLFormElement>) {
+  async function salvar(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     if (salvando) return;
     const nome = dados.nome.trim();

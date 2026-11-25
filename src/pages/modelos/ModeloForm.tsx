@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
@@ -27,7 +27,7 @@ export function ModeloForm({ modelo, marcas, categorias, onClose, onSaved }: Mod
   const opcoesCategorias = categorias.flatMap((categoria) => categoria.id ? [{ value: categoria.id, label: categoria.nome }] : []);
   const semOpcoes = !opcoesMarcas.length || !opcoesCategorias.length;
 
-  async function salvar(e: FormEvent<HTMLFormElement>) {
+  async function salvar(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     if (salvando) return;
     const nome = dados.nome.trim();

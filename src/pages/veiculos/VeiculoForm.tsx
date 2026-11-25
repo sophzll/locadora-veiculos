@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
@@ -31,7 +31,7 @@ export function VeiculoForm({ veiculo, modelos, marcas, onClose, onSaved }: Veic
      label: `${marcas.find((marca) => marca.id === m.marcaId)?.nome ?? ""} ${m.nome}`.trim() 
     }] : []);
 
-  async function salvar(e: FormEvent<HTMLFormElement>) {
+  async function salvar(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     if (salvando) return;
     const placa = normalizar(dados.placa);

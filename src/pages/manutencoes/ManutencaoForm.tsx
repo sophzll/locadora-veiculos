@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Select, type SelectOption } from "../../components/Select";
@@ -24,7 +24,7 @@ export function ManutencaoForm({ manutencao, opcoes, onClose, onSaved }: Manuten
   const [salvando, setSalvando] = useState(false);
   const editando = Boolean(manutencao?.id);
 
-  async function salvar(e: FormEvent<HTMLFormElement>) {
+  async function salvar(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     if (salvando) return;
     const custo = Number(valor);
