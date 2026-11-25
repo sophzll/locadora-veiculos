@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import type { Manutencao } from "../../models/Manutencao";
 import { useEffect, useRef, useState } from "react";
 import { VeiculoForm } from "./VeiculoForm";
 import { Button } from "../../components/Button";
@@ -24,6 +26,7 @@ export function VeiculoList() {
   const [modelos, setModelos] = useState<Modelo[]>([]);
   const [marcas, setMarcas] = useState<Marca[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [manutencoes, setManutencoes] = useState<Manutencao[]>([]);
   const [locacoes, setLocacoes] = useState<Locacao[]>([]);
   const [pesquisa, setPesquisa] = useState("");
   const [carregando, setCarregando] = useState(true);
@@ -34,8 +37,8 @@ export function VeiculoList() {
 
   useEffect(() => {
     let ativo = true;
-    Promise.all([veiculoService.listar(), modeloService.listar(), marcaService.listar(), categoriaService.listar(), locacaoService.listar()])
-      .then(([v, mo, ma, c, l]) => { if (ativo) { setVeiculos(v); setModelos(mo); setMarcas(ma); setCategorias(c); setLocacoes(l); } })
+    Promise.all([veiculoService.listar(), modeloService.listar(), marcaService.listar(), categoriaService.listar(), locacaoService.listar(), manutencaoService.listar()])
+      .then(([v, mo, ma, c, l, mt]) => { if (ativo) { setVeiculos(v); setModelos(mo); setMarcas(ma); setCategorias(c); setLocacoes(l); setManutencoes(mt); } })
       .catch(() => { if (ativo) { setFalha(true); setMensagem({ type: "danger", message: "Não foi possível carregar os veículos." }); } })
       .finally(() => { if (ativo) setCarregando(false); });
     return () => { ativo = false; };
@@ -70,7 +73,11 @@ export function VeiculoList() {
     { header: "Cor", render: (v) => v.cor },
     { header: "Chassi", render: (v) => v.chassi },
     { header: "Km", render: (v) => v.kmRodado.toLocaleString("pt-BR") },
-    { header: "Locação", render: (v) => <span className={`badge ${locado(v) ? "text-bg-primary" : "text-bg-secondary"}`}>{locado(v) ? "Locado" : "Sem locação aberta"}</span> },
+    { header: "Status", render: (v) => {
+      const emManutencao = manutencoes.some(m => m.veiculoId === v.id && m.status === "EM_ANDAMENTO");
+      return <span className={`badge ${emManutencao ? "text-bg-warning" : locado(v) ? "text-bg-primary" : "text-bg-success"}`}>{emManutencao ? "Em manutenção" : locado(v) ? "Locado" : "Disponível"}</span>;
+    } },
+    { header: "Histórico", render: (v) => v.id ? <Link className="btn btn-sm btn-outline-light" to={`/manutencoes?veiculoId=${encodeURIComponent(v.id)}`}>Manutenções</Link> : "—" },
   ];
   const filtrados = veiculos.filter((v) => `${v.placa} ${v.chassi} ${nomeModelo(v)} ${nomeMarca(v)} ${nomeCategoria(v)} ${v.cor} ${v.anoFabricacao}`.toLocaleLowerCase("pt-BR").includes(pesquisa.trim().toLocaleLowerCase("pt-BR")));
 
