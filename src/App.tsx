@@ -9,6 +9,10 @@ import { ModeloList } from "./pages/modelos/ModeloList";
 import { VeiculoList } from "./pages/veiculos/VeiculoList";
 import { ManutencaoList } from "./pages/manutencoes/ManutencaoList";
 import { ClienteList } from "./pages/clientes/ClienteList";
+import { LocacaoList } from "./pages/locacoes/LocacaoList";
+import { LocacaoForm } from "./pages/locacoes/LocacaoForm";
+import { LocacaoConsulta } from "./pages/locacoes/LocacaoConsulta";
+import { DevolucaoForm } from "./pages/locacoes/DevolucaoForm";
 import "./base.css";
 
 function EmBreve() {
@@ -34,6 +38,10 @@ export default function App() {
           <Route path="/veiculos" element={<VeiculoList />} />
           <Route path="/manutencoes" element={<ManutencaoList />} />
           <Route path="/clientes" element={<ClienteList />} />
+          <Route path="/locacoes" element={<LocacaoList />} />
+          <Route path="/locacoes/novo" element={<LocacaoForm />} />
+          <Route path="/locacoes/:id" element={<LocacaoConsulta />} />
+          <Route path="/locacoes/:id/devolucao" element={<DevolucaoForm />}/>
           <Route path="*" element={<EmBreve />} />
         </Routes>
       </main>
