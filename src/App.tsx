@@ -6,6 +6,7 @@ import { Home } from "./pages/Home";
 import { MarcaList } from "./pages/marcas/MarcaList";
 import { CategoriaList } from "./pages/categorias/CategoriaList";
 import { ModeloList } from "./pages/modelos/ModeloList";
+import { VeiculoList } from "./pages/veiculos/VeiculoList";
 import "./base.css";
 
 function EmBreve() {
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/marcas" element={<MarcaList />} />
           <Route path="/categorias" element={<CategoriaList />} />
           <Route path="/modelos" element={<ModeloList />} />
+          <Route path="/veiculos" element={<VeiculoList />} />
           <Route path="*" element={<EmBreve />} />
         </Routes>
       </main>
