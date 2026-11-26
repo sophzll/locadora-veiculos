@@ -10,10 +10,12 @@ import { Table, type Column } from "../../components/Table";
 import type { Locacao } from "../../models/Locacao";
 import type { Cliente } from "../../models/Cliente";
 import type { Veiculo } from "../../models/Veiculo";
+import type { Modelo } from "../../models/Modelo";
 
 import { locacaoService } from "../../service/locacaoService";
 import { clienteService } from "../../service/clienteService";
 import { veiculoService } from "../../service/veiculoService";
+import { modeloService } from "../../service/modeloService";
 
 export function LocacaoList() {
     const navigate = useNavigate();
@@ -22,6 +24,7 @@ export function LocacaoList() {
     const [registros, setRegistros] = useState<Locacao[]>([]);
     const [clientes, setClientes] = useState<Cliente[]>([]);
     const [veiculos, setVeiculos] = useState<Veiculo[]>([]);
+    const [modelos, setModelos] = useState<Modelo[]>([]);
 
     const [status, setStatus] = useState("");
     const [cliente, setCliente] = useState("");
@@ -47,19 +50,20 @@ export function LocacaoList() {
         Promise.all([
             locacaoService.listar(),
             clienteService.listar(),
-            veiculoService.listar()
+            veiculoService.listar(),
+            modeloService.listar()
         ])
-            .then(([l, c, v]) => {
+            .then(([l, c, v, m]) => {
                 if (ativo) {
                     setRegistros(l);
                     setClientes(c);
                     setVeiculos(v);
+                    setModelos(m);
                 }
             })
             .catch(() => {
                 if (ativo) {
                     setFalha(true);
-
                     setMensagem({
                         type: "danger",
                         message: "Não foi possível carregar as locações."
@@ -95,9 +99,19 @@ export function LocacaoList() {
         },
         {
             header: "Veículo",
-            render: (l) =>
-                veiculos.find((v) => v.id === l.veiculoId)?.placa
-                ?? l.veiculoId
+            render: (l) => {
+                const veiculo = veiculos.find(
+                    (v) => v.id === l.veiculoId
+                );
+
+                if (!veiculo) return l.veiculoId;
+
+                const modelo = modelos.find(
+                    (m) => m.id === veiculo.modeloId
+                );
+
+                return `${veiculo.placa} · ${modelo?.nome ?? "Modelo não identificado"}`;
+            }
         },
         {
             header: "Retirada",
@@ -135,11 +149,9 @@ export function LocacaoList() {
 
     return (
         <section className="container-xl py-5">
-
             <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                 <div>
                     <h2>Locações</h2>
-
                     <p className="text-body-secondary mb-0">
                         Gerencie as locações da sua frota.
                     </p>
@@ -181,7 +193,6 @@ export function LocacaoList() {
             </div>
 
             <Card title="Locações cadastradas">
-
                 {/* Filtros */}
                 <div className="row">
                     <div className="col-md-6">
@@ -192,18 +203,9 @@ export function LocacaoList() {
                             placeholder="Todos"
                             onChange={(e) => setStatus(e.target.value)}
                             options={[
-                                {
-                                    value: "ABERTA",
-                                    label: "Aberta"
-                                },
-                                {
-                                    value: "FINALIZADA",
-                                    label: "Finalizada"
-                                },
-                                {
-                                    value: "CANCELADA",
-                                    label: "Cancelada"
-                                }
+                                { value: "ABERTA", label: "Aberta" },
+                                { value: "FINALIZADA", label: "Finalizada" },
+                                { value: "CANCELADA", label: "Cancelada" }
                             ]}
                         />
                     </div>
@@ -223,6 +225,7 @@ export function LocacaoList() {
                         />
                     </div>
                 </div>
+
                 {carregando ? (
                     <p>Carregando...</p>
                 ) : !falha && (

@@ -181,7 +181,32 @@ export function LocacaoForm() {
 
       <Card title="Cliente e veículo"><div className="row"><div className="col-md-6"><Select name="clienteId" label="Cliente" required disabled={salvando} value={dados.clienteId} onChange={e => setDados(d => ({...d, clienteId:e.target.value}))} options={base.clientes.flatMap(c => c.id ? [{value:String(c.id),label:`${c.nome}${c.validadeCnh < hoje() ? " — CNH vencida" : ""}`}] : [])} /></div>
 
-      <div className="col-md-6"><Select name="veiculoId" label="Veículo disponível" required disabled={salvando} value={dados.veiculoId} onChange={e => { const id=e.target.value; setDados(d=>({...d,veiculoId:id})); setKm(String(base.veiculos.find(v=>String(v.id) === String(id))?.kmRodado ?? "")); }} options={base.veiculos.flatMap(v=>{ if(!v.id || !disponivel(base,String(v.id))) return []; const m=base.modelos.find(m=>String(m.id) === String(v.modeloId)); return [{value:String(v.id),label:`${base.marcas.find(b=>String(b.id) === String(m?.marcaId))?.nome ?? ""} ${m?.nome ?? ""} — ${v.placa}`.trim()}]; })} /></div></div></Card>
+      <div className="col-md-6">
+         <Select
+            name="veiculoId"
+            label="Veículo disponível"
+            required
+            disabled={salvando}
+            value={dados.veiculoId}
+            onChange={e => {
+                const id = e.target.value;
+                setDados(d => ({ ...d, veiculoId: id }));
+                setKm(String(base.veiculos.find(v => String(v.id) === id)?.kmRodado ?? ""));
+            }}
+            options={base.veiculos.flatMap(v => {
+                if (!v.id || !disponivel(base, String(v.id))) return [];
+
+                const modelo = base.modelos.find(
+                    m => String(m.id) === String(v.modeloId)
+                );
+
+                return [{
+                    value: String(v.id),
+                    label: `${v.placa} · ${modelo?.nome ?? "Modelo não identificado"}`
+                }];
+            })}
+        />
+      </div></div></Card>
 
       <Card title="Período e valor"><div className="row"><div className="col-md-6"><Input label="Data de retirada" name="dataRetirada" type="datetime-local" required disabled={salvando} value={dados.dataRetirada} onChange={e=>setDados(d=>({...d,dataRetirada:e.target.value}))}/></div><div className="col-md-6"><Input label="Devolução prevista" name="dataDevolucaoPrevista" type="datetime-local" required disabled={salvando} value={dados.dataDevolucaoPrevista} onChange={e=>setDados(d=>({...d,dataDevolucaoPrevista:e.target.value}))}/></div></div><div className="row g-3"><div className="col-md-4">Diária: <strong>{moeda(valorDiaria)}</strong></div><div className="col-md-4">Diárias: <strong>{dias}</strong></div><div className="col-md-4">Total previsto: <strong className="text-primary">{moeda(total)}</strong></div></div></Card>
 
