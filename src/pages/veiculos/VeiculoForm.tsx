@@ -1,3 +1,4 @@
+import { mascaraPlaca, mascaraChassi, mascaraAno } from "../../utils/mascaras";
 import { useState, type SubmitEvent } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -20,7 +21,7 @@ interface VeiculoFormProps {
 const normalizar = (valor: string) => valor.replace(/[\s-]/g, "").toUpperCase();
 
 export function VeiculoForm({ veiculo, modelos, marcas, onClose, onSaved }: VeiculoFormProps) {
-  const [dados, setDados] = useState<Veiculo>({ ...(veiculo ?? veiculoInicial) });
+  const [dados, setDados] = useState<Veiculo>({ ...(veiculo ?? veiculoInicial), placa: mascaraPlaca(veiculo?.placa ?? ""), chassi: mascaraChassi(veiculo?.chassi ?? "") });
   const [ano, setAno] = useState(String(dados.anoFabricacao));
   const [km, setKm] = useState(String(dados.kmRodado));
   const [erro, setErro] = useState("");
@@ -42,7 +43,13 @@ export function VeiculoForm({ veiculo, modelos, marcas, onClose, onSaved }: Veic
     if (!placa || !chassi || !cor || !opcoes.some((o) => o.value === dados.modeloId)) {
       setErro("Preencha todos os campos e selecione um modelo válido."); return;
     }
-    if (!ano.trim() || !Number.isInteger(anoFabricacao) || anoFabricacao < 1886 || anoFabricacao > new Date().getFullYear() + 1) {
+    if (!/^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(placa)) {
+      setErro("Informe uma placa válida (ABC1234 ou ABC1D23)."); return;
+    }
+    if (!/^[A-Z0-9]{17}$/.test(chassi)) {
+      setErro("O chassi deve conter 17 caracteres alfanuméricos."); return;
+    }
+    if (ano.length !== 4 || !Number.isInteger(anoFabricacao) || anoFabricacao < 1886 || anoFabricacao > new Date().getFullYear() + 1) {
       setErro("Informe um ano de fabricação válido."); return;
     }
     if (!km.trim() || !Number.isSafeInteger(kmRodado) || kmRodado < 0) {
@@ -71,9 +78,9 @@ export function VeiculoForm({ veiculo, modelos, marcas, onClose, onSaved }: Veic
         {!opcoes.length && <Alert type="warning" message="Cadastre um modelo antes de cadastrar veículos." />}
         <Select label="Modelo" name="modeloId" value={dados.modeloId} options={opcoes} required disabled={salvando} onChange={(e) => setDados({ ...dados, modeloId: e.target.value })} />
         <div className="row">
-          <div className="col-md-5"><Input label="Placa" name="placa" value={dados.placa} placeholder="Ex: ABC1D23" required disabled={salvando} onChange={(e) => setDados({ ...dados, placa: e.target.value.toUpperCase() })} /></div>
-          <div className="col-md-7"><Input label="Chassi" name="chassi" value={dados.chassi} required disabled={salvando} onChange={(e) => setDados({ ...dados, chassi: e.target.value.toUpperCase() })} /></div>
-          <div className="col-md-6"><Input label="Ano de fabricação" name="anoFabricacao" type="number" value={ano} min={1886} step={1} required disabled={salvando} onChange={(e) => setAno(e.target.value)} /></div>
+          <div className="col-md-5"><Input label="Placa" name="placa" value={dados.placa} maxLength={7} placeholder="Ex: ABC1D23" required disabled={salvando} onChange={(e) => setDados({ ...dados, placa: mascaraPlaca(e.target.value) })} /></div>
+          <div className="col-md-7"><Input label="Chassi" name="chassi" value={dados.chassi} maxLength={17} required disabled={salvando} onChange={(e) => setDados({ ...dados, chassi: mascaraChassi(e.target.value) })} /></div>
+          <div className="col-md-6"><Input label="Ano de fabricação" name="anoFabricacao" type="text" value={ano} maxLength={4} inputMode="numeric" required disabled={salvando} onChange={(e) => setAno(mascaraAno(e.target.value))} /></div>
           <div className="col-md-6"><Input label="Cor" name="cor" value={dados.cor} required disabled={salvando} onChange={(e) => setDados({ ...dados, cor: e.target.value })} /></div>
         </div>
         <Input label="Quilometragem (km)" name="kmRodado" type="number" value={km} min={0} step={1} required disabled={salvando} onChange={(e) => setKm(e.target.value)} />

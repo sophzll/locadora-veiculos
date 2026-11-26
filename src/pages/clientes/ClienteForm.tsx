@@ -1,3 +1,4 @@
+import { mascaraCPF, mascaraCNH, mascaraTelefone } from "../../utils/mascaras";
 import { useState, type SubmitEvent } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -15,7 +16,7 @@ interface ClienteFormProps {
 const digitos = (valor: string) => valor.replace(/\D/g, "");
 
 export function ClienteForm({ cliente, onClose, onSaved }: ClienteFormProps) {
-  const [dados, setDados] = useState<Cliente>({ ...clienteInicial, ...cliente });
+  const [dados, setDados] = useState<Cliente>({ ...clienteInicial, ...cliente, cpf: mascaraCPF(cliente?.cpf ?? ""), cnh: mascaraCNH(cliente?.cnh ?? ""), telefone: mascaraTelefone(cliente?.telefone ?? "") });
   const [erro, setErro] = useState("");
   const [salvando, setSalvando] = useState(false);
   const editando = Boolean(cliente?.id);
@@ -35,6 +36,9 @@ export function ClienteForm({ cliente, onClose, onSaved }: ClienteFormProps) {
     if (cpf.length !== 11 || cnh.length !== 11) {
       setErro("CPF e CNH devem conter 11 dígitos."); return;
     }
+    if (![10, 11].includes(digitos(dados.telefone).length)) {
+      setErro("Informe um telefone com DDD e 10 ou 11 dígitos."); return;
+    }
     setSalvando(true); setErro("");
     try {
       const existentes = await clienteService.listar();
@@ -45,8 +49,8 @@ export function ClienteForm({ cliente, onClose, onSaved }: ClienteFormProps) {
         setErro("Esta CNH já está cadastrada."); return;
       }
       const payload: Cliente = {
-        ...dados, nome: dados.nome.trim(), cpf: cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4"), cnh,
-        telefone: dados.telefone.trim(), email: dados.email.trim(), endereco: dados.endereco.trim(),
+        ...dados, nome: dados.nome.trim(), cpf: mascaraCPF(cpf), cnh,
+        telefone: mascaraTelefone(dados.telefone), email: dados.email.trim(), endereco: dados.endereco.trim(),
       };
       const salvo = cliente?.id ? await clienteService.atualizar(cliente.id, payload) : await clienteService.criar(payload);
       onSaved(salvo, editando);
@@ -60,10 +64,10 @@ export function ClienteForm({ cliente, onClose, onSaved }: ClienteFormProps) {
         {erro && <Alert type="danger" message={erro} onClose={() => setErro("")} />}
         <Input label="Nome completo" name="nome" value={dados.nome} required disabled={salvando} onChange={e => alterar("nome", e.target.value)} />
         <div className="row">
-          <div className="col-md-6"><Input label="CPF" name="cpf" value={dados.cpf} placeholder="000.000.000-00" required disabled={salvando} onChange={e => alterar("cpf", e.target.value)} /></div>
-          <div className="col-md-6"><Input label="CNH" name="cnh" value={dados.cnh} placeholder="11 dígitos" required disabled={salvando} onChange={e => alterar("cnh", e.target.value)} /></div>
+          <div className="col-md-6"><Input label="CPF" name="cpf" value={dados.cpf} maxLength={14} inputMode="numeric" required disabled={salvando} onChange={e => alterar("cpf", mascaraCPF(e.target.value))} /></div>
+          <div className="col-md-6"><Input label="CNH" name="cnh" value={dados.cnh} maxLength={11} inputMode="numeric" placeholder="11 dígitos" required disabled={salvando} onChange={e => alterar("cnh", mascaraCNH(e.target.value))} /></div>
           <div className="col-md-6"><Input label="Validade da CNH" name="validadeCnh" type="date" value={dados.validadeCnh} required disabled={salvando} onChange={e => alterar("validadeCnh", e.target.value)} /></div>
-          <div className="col-md-6"><Input label="Telefone" name="telefone" type="tel" value={dados.telefone} required disabled={salvando} onChange={e => alterar("telefone", e.target.value)} /></div>
+          <div className="col-md-6"><Input label="Telefone" name="telefone" type="tel" value={dados.telefone} maxLength={15} inputMode="tel" required disabled={salvando} onChange={e => alterar("telefone", mascaraTelefone(e.target.value))} /></div>
         </div>
         <Input label="E-mail" name="email" type="email" value={dados.email} required disabled={salvando} onChange={e => alterar("email", e.target.value)} />
         <Input label="Endereço" name="endereco" value={dados.endereco} required disabled={salvando} onChange={e => alterar("endereco", e.target.value)} />

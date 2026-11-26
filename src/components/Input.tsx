@@ -12,6 +12,8 @@ interface InputProps {
   required?: boolean;
   min?: number | string;
   step?: number | string;
+  maxLength?: number;
+  inputMode?: "text" | "numeric" | "decimal" | "tel" | "email";
 }
 
 export function Input({

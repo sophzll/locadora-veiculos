@@ -1,3 +1,4 @@
+import { mascaraAno } from "../../utils/mascaras";
 import { useState, type SubmitEvent } from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -32,7 +33,7 @@ export function ModeloForm({ modelo, marcas, categorias, onClose, onSaved }: Mod
     if (salvando) return;
     const nome = dados.nome.trim();
     const anoNumerico = Number(ano);
-    if (!nome || !ano.trim() || !Number.isInteger(anoNumerico) || anoNumerico < 1886 || anoNumerico > 9999) {
+    if (!nome || ano.length !== 4 || !Number.isInteger(anoNumerico) || anoNumerico < 1886 || anoNumerico > 9999) {
       setErro("Informe o nome e um ano válido do modelo (1886 a 9999).");
       return;
     }
@@ -61,7 +62,7 @@ export function ModeloForm({ modelo, marcas, categorias, onClose, onSaved }: Mod
         {erro && <Alert type="danger" message={erro} onClose={() => setErro("")} />}
         {semOpcoes && <Alert type="warning" message="Cadastre ao menos uma marca e uma categoria antes de salvar um modelo." />}
         <Input label="Nome do modelo" name="nome" value={dados.nome} placeholder="Ex.: Uno" required disabled={salvando} onChange={(e) => setDados({ ...dados, nome: e.target.value })} />
-        <Input label="Ano do modelo" name="ano" type="number" value={ano} min={1886} step={1} required disabled={salvando} onChange={(e) => setAno(e.target.value)} />
+        <Input label="Ano do modelo" name="ano" type="text" value={ano} maxLength={4} inputMode="numeric" required disabled={salvando} onChange={(e) => setAno(mascaraAno(e.target.value))} />
         <Select label="Marca" name="marcaId" value={dados.marcaId} options={opcoesMarcas} required disabled={salvando} onChange={(e) => setDados({ ...dados, marcaId: e.target.value })} />
         <Select label="Categoria" name="categoriaId" value={dados.categoriaId} options={opcoesCategorias} required disabled={salvando} onChange={(e) => setDados({ ...dados, categoriaId: e.target.value })} />
         <div className="d-flex justify-content-end gap-2 border-top pt-3 mt-3">
